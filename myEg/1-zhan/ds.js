@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-09 10:15:19
- * @LastEditTime: 2021-07-09 17:19:40
+ * @LastEditTime: 2021-07-12 15:23:12
  * @LastEditors: Please set LastEditors
  * @Description: 数据结构：栈
  * @FilePath: \learn-js-data-algorithm\myEg\1-zhan\ds.js
@@ -112,8 +112,5 @@ class StackObject {
         return objString;
     }
 }
-
-export {
-    StackArray,
-    StackObject
-}
+exports.StackArray=StackArray;
+exports.StackObject=StackObject;
