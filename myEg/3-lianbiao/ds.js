@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-15 09:45:33
- * @LastEditTime: 2021-07-15 17:36:08
+ * @LastEditTime: 2021-07-16 17:29:02
  * @LastEditors: Please set LastEditors
  * @Description: 数据结构：链表
  * @FilePath: \learn-js-data-algorithm\myEg\3-lianbiao\ds.js
@@ -10,11 +10,11 @@
  * 
  */
 
-const { defaultEquals } = require('../util');
+const { defaultEquals , defaultCompare , Compare} = require('../util');
 const { Node, DoublyNode } = require('./models/linked-list-models');
 
 /**
- * 基础单向链表类
+ * 基础单向链表
  */
 class linkedList {
 
@@ -145,7 +145,7 @@ class linkedList {
 
 
 /**
- * 双向链表类
+ * 双向链表
  */
 class DoublyLinkedList extends linkedList {
 
@@ -217,7 +217,7 @@ class DoublyLinkedList extends linkedList {
 }
 
 /**
- * 循环链表
+ * 单向循环链表
  */
 class CircularLinkedList extends linkedList {
 
@@ -257,7 +257,7 @@ class CircularLinkedList extends linkedList {
                     this.head = undefined;
                 }else{
                     const removed = this.head;
-                    current = this.getElementAt(this.size()-1);
+                    current = this.getElementAt(this.size());
                     this.head = this.head.next;
                     current.next = this.head;
                     current = removed;
@@ -272,4 +272,37 @@ class CircularLinkedList extends linkedList {
         }
         return undefined;
     }
+}
+
+/**
+ * 有序链表
+ */
+class SortedLinkedList extends linkedList {
+
+    constructor(equalsFn = defaultEquals, compareFn = defaultCompare) {
+        super(equalsFn);
+        this.compareFn = compareFn;
+    }
+    
+    insert(element, index = 0) {
+        if(this.isEmpty()) {
+            return super.insert(element, 0);
+        }
+        const pos = this.getIndexNextSortedElement(element);
+        return super.insert(element, pos);
+    }
+
+    getIndexNextSortedElement(element) {    // 获取比当前项值小的元素位置
+        let current = this.head;
+        let i = 0;
+        for (; i < this.size() && current; i++) {
+            const comp = this.compareFn(element , current.element);
+            if(comp === Compare.LESS_THAN){
+                return i;
+            }
+            current = current.next;
+        }
+        return i;
+    }
+    
 }
