@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-15 11:00:48
- * @LastEditTime: 2021-07-16 17:23:06
+ * @LastEditTime: 2021-07-19 16:09:00
  * @LastEditors: Please set LastEditors
  * @Description: 工具函数
  * @FilePath: \learn-js-data-algorithm\myEg\util.js
@@ -33,3 +33,16 @@ exports.defaultCompare = function(a , b) {
     return a < b ? Compare.LESS_THAN : Compare.BIGGER_THAN
 }
 
+/**
+ * 默认转化为字符串的函数
+ */
+exports.defaultToString = function(item) {
+    if(item === null){
+        return 'NULL';
+    }else if(item === undefined) {
+        return 'UNDEFINED';
+    }else if(typeof item === 'string' || item instanceof String){
+        return `${item}`;
+    }
+    return item.toString();
+}
