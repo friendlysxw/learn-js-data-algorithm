@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-15 09:45:33
- * @LastEditTime: 2021-07-16 17:29:02
+ * @LastEditTime: 2021-07-19 09:40:52
  * @LastEditors: Please set LastEditors
  * @Description: 数据结构：链表
  * @FilePath: \learn-js-data-algorithm\myEg\3-lianbiao\ds.js
@@ -11,7 +11,7 @@
  */
 
 const { defaultEquals , defaultCompare , Compare} = require('../util');
-const { Node, DoublyNode } = require('./models/linked-list-models');
+const { Node, DoublyNode } = require('../models/linked-list-models');
 
 /**
  * 基础单向链表
