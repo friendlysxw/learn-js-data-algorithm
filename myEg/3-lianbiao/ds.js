@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-15 09:45:33
- * @LastEditTime: 2021-07-19 09:40:52
+ * @LastEditTime: 2021-07-20 16:52:59
  * @LastEditors: Please set LastEditors
  * @Description: 数据结构：链表
  * @FilePath: \learn-js-data-algorithm\myEg\3-lianbiao\ds.js
@@ -16,7 +16,7 @@ const { Node, DoublyNode } = require('../models/linked-list-models');
 /**
  * 基础单向链表
  */
-class linkedList {
+class LinkedList {
 
     constructor(equalsFn = defaultEquals) {
 
@@ -147,7 +147,7 @@ class linkedList {
 /**
  * 双向链表
  */
-class DoublyLinkedList extends linkedList {
+class DoublyLinkedList extends LinkedList {
 
     constructor(equalsFn = defaultEquals) {
         super(equalsFn);
@@ -219,7 +219,7 @@ class DoublyLinkedList extends linkedList {
 /**
  * 单向循环链表
  */
-class CircularLinkedList extends linkedList {
+class CircularLinkedList extends LinkedList {
 
     constructor(equalsFn = defaultEquals) {
         super(equalsFn);
@@ -277,7 +277,7 @@ class CircularLinkedList extends linkedList {
 /**
  * 有序链表
  */
-class SortedLinkedList extends linkedList {
+class SortedLinkedList extends LinkedList {
 
     constructor(equalsFn = defaultEquals, compareFn = defaultCompare) {
         super(equalsFn);
@@ -306,3 +306,8 @@ class SortedLinkedList extends linkedList {
     }
     
 }
+
+exports.LinkedList = LinkedList;
+exports.DoublyLinkedList = DoublyLinkedList;
+exports.CircularLinkedList = CircularLinkedList;
+exports.SortedLinkedList = SortedLinkedList;

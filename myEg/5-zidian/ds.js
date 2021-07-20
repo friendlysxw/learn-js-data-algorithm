@@ -1,13 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 15:45:42
- * @LastEditTime: 2021-07-19 17:11:48
+ * @LastEditTime: 2021-07-20 17:28:13
  * @LastEditors: Please set LastEditors
  * @Description: 数据结构：字典和散列表
  * @FilePath: \learn-js-data-algorithm\myEg\5-zidian\ds.js
  */
 
 const { defaultToString } = require("../util");
+const { LinkedList } = require("../3-lianbiao/ds");
 
 class ValuePair{
     constructor(key,value) {
@@ -99,4 +100,139 @@ class Dictionary {
     
 }
 
+/**
+ * 散列表
+ */
+
+class HashTable {
+    
+    constructor(toStrFn = defaultToString) {
+        this.toStrFn = toStrFn;
+        this.table = {};
+    }
+
+    loseloseHashCode(key) { // 散列函数
+        if (typeof key === 'number') {
+            return key;
+        }
+        const tableKey = this.toStrFn(key);
+        let hash = 0;
+        for (let i = 0; i < tableKey.length; i++) {
+            hash += tableKey.charCodeAt(i);
+        }
+        return hash % 37;
+
+        // 更好的散列函数
+        const tableKey = this.toStrFn(key);
+        let hash = 5381;
+        for (let i = 0; i < tableKey.length; i++) {
+            hash = (hash * 33) + tableKey.charCodeAt(i);
+        }
+        return hash % 1013;
+        
+    }
+
+    hashCode(key) {
+        return this.loseloseHashCode(key);
+    }
+    
+    put(key,value) {    // 向散列表增加一个新的项（也能更新散列表）
+        if(key != null && value != null) {
+            const position = this.hashCode(key);
+            this.table[position] = new ValuePair(key,value);
+            return true;
+        }
+        return false;
+    }
+
+    remove(key) {   // 根据键值从散列表表中移除值
+        const hash = this.hashCode(key);
+        const valuePair = this.table[hash];
+        if(valuePair != null){
+            delete this.table[hash];
+            return true;
+        }
+        return false;
+    }
+
+    get(key) {  // 返回根据键值检索到的特定的值
+        const valuePair = this.table[this.hashCode(key)];
+        return valuePair == null ? undefined : valuePair.value;
+    }
+
+    toString() {   
+        if (this.isEmpty()) {     
+            return '';   
+        }   
+        const keys = Object.keys(this.table);   
+        let objString = `{${keys[0]} => ${this.table[keys[0]].toString()}}`;   
+        for (let i = 1; i < keys.length; i++) {     
+            objString = `${objString},{${keys[i]} => ${this.table[keys[i]].toString()}}`;   
+        }   
+        return objString; 
+    }
+}
+
+/**
+ * 散列表：分离链接
+ * 解决hash冲突
+ */
+class HashTableSeparateChaining extends HashTable{
+
+    constructor(toStrFn = defaultToString) {
+        this.toStrFn = toStrFn;
+        this.table = {};
+    }
+
+    put(key, value) {
+
+        if(key != null && value != null) {
+            const position = this.hashCode(key);
+            if(this.table[position] == null){
+                // 关联一个链表的实例
+                this.table[position] = new LinkedList();
+            }
+            this.table[position].push(new ValuePair(key,value));
+            return true;
+        }
+        return false;
+
+    }
+    get(key) {
+        const position = this.hashCode(key);
+        const linkedList = this.table[position];
+        if(linkedList != null && !linkedList.isEmpty()){
+            let current = linkedList.getHead();
+            while (current != null) {
+                if (current.element.key === key) {
+                    return current.element.value;
+                }
+                current = current.next;
+            }
+        }
+        return undefined;
+    }
+    remove(key) {
+        const position = this.hashCode(key);
+        const linkedList = this.table[position];
+        if(linkedList != null && !linkedList.isEmpty()){
+            let current = linkedList.getHead();
+            while (current != null){
+                if(current.element.key === key){
+                    linkedList.remove(current.element);
+                    if(linkedList.isEmpty()){
+                        delete this.table[position];
+                    }
+                    return true;
+                }
+                current = current.next;
+            }
+        }
+        return false;
+    }
+}
+
+
 exports.Dictionary = Dictionary;
+exports.HashTable = HashTable;
+exports.HashTableSeparateChaining = HashTableSeparateChaining;
