@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-22 13:59:56
- * @LastEditTime: 2021-07-22 17:19:42
+ * @LastEditTime: 2021-07-26 16:20:25
  * @LastEditors: Please set LastEditors
  * @Description: 数据结构：树
  * @FilePath: \learn-js-data-algorithm\myEg\7-tree\ds.js
@@ -24,6 +24,11 @@ const { Node } = require('../models/node');
 
 /**
  * 二叉搜索树
+ * 
+ * 特点：
+ * 只允许在左侧存储比父节点小的值
+ * 只允许在右侧存储比父节点大的值
+ * 
  */
 class BinarySearchTree {
 
@@ -169,6 +174,10 @@ class BinarySearchTree {
 
 /**
  * 自平衡树（自平衡二叉搜索树）
+ * 
+ * 已知条件：
+ * 左右子树高度最多相差2，且只有相差2时才需要调整平衡
+ *
  */
 const BalanceFactor = {   
     UNBALANCED_RIGHT: 1,
@@ -193,7 +202,7 @@ class AVLTree extends BinarySearchTree {
         return Math.max(this.getNodeHeight(node.left),this.getNodeHeight(node.right))+1;
     }
 
-    getBalanceFactor(node) {    // 获取平衡因子
+    getBalanceFactor(node) {    // 获取节点的平衡因子
         const heightDifference = this.getNodeHeight(node.left) - this.getNodeHeight(node.right);
         switch(heightDifference){
             case -2:
@@ -208,4 +217,91 @@ class AVLTree extends BinarySearchTree {
                 return BalanceFactor.BALANCED;
         }
     }
+
+    rotationLL(node) { // 向右单旋转
+        const tmp = node.left;
+        node.left = tmp.right;
+        tmp.right  = node;
+        return tmp;
+    }
+
+    rotationRR(node) {  // 向左单旋转
+        const tmp = node.right;
+        node.right = tmp.left;
+        tmp.left = node;
+        return tmp;
+    }
+
+    rotationLR(node) {  // 向右双旋转
+        node.left = this.rotationRR(node.left);
+        return this.rotationLL(node);
+    }
+
+    rotationRL(node) {  // 向左双旋转
+        node.right = this.rotationLL(node.right);
+        return this.rotationRR(node);
+    }
+
+    insert(key) {   // 向树中插入一个新的节点
+        this.root = this.insertNode(this.root,key);
+    }
+    insertNode(node,key) {
+        // 向在BST树中一样插入节点
+        if(node == null){
+            return new Node(key);
+        }else if(this.compareFn(key,node.key) === Compare.LESS_THAN){
+            node.left = this.insertNode(node.left,key);
+        }else if(this.compareFn(key,node.key) === Compare.BIGGER_THAN){
+            node.right = this.insertNode(node.right,key);
+        }else{
+            return node;    // 重复的键
+        }
+
+        // 如果需要，将树进行平衡操作
+        const balanceFactor = this.getBalanceFactor(node);
+        if(balanceFactor === BalanceFactor.UNBALANCED_LEFT){
+            if(this.compareFn(key,node.left.key) === Compare.LESS_THAN) {
+                node = this.rotationLL(node);
+            }else{
+                return this.rotationLR(node);
+            }
+        }
+        if(balanceFactor === BalanceFactor.UNBALANCED_RIGHT){
+            if(this.compareFn(key,node.right.key) === Compare.BIGGER_THAN){
+                node = this.rotationRR(node);
+            }else{
+                return this.rotationRL(node);
+            }
+        }
+        return node;
+    }
+
+    removeNode(node,key) {
+        node = super.removeNode(node,key);
+        if(node == null){
+            return node;    // null,不需要进行平衡
+        }
+        // 检测树是否平衡
+        const balanceFactor = this.getBalanceFactor(node);
+        if(balanceFactor === BalanceFactor.UNBALANCED_LEFT){
+            const balanceFactorLeft = this.getBalanceFactor(node.left);
+            if(balanceFactorLeft === BalanceFactor.BALANCED || balanceFactorLeft === BalanceFactor.SLIGHTLY_UNBALANCED_LEFT){
+                return this.rotationLL(node);
+            }
+            if(balanceFactorLeft === BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT){
+                return this.rotationLR(node.left);
+            }
+        }
+        if(balanceFactor === BalanceFactor.UNBALANCED_RIGHT){
+            const balanceFactorRight = this.getBalanceFactor(node.right);
+            if(balanceFactorRight === BalanceFactor.BALANCED || balanceFactorRight === BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT){
+                return this.rotationRR(node);
+            }
+            if(balanceFactorRight === BalanceFactor.SLIGHTLY_UNBALANCED_LEFT){
+                return this.rotationRL(node.right);
+            }
+        }
+        return node;
+    }
+    
 }
