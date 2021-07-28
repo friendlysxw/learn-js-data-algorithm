@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:55
- * @LastEditTime: 2021-07-28 17:01:31
+ * @LastEditTime: 2021-07-28 17:03:27
  * @LastEditors: Please set LastEditors
  * @Description: 算法应用：二叉堆
  * @FilePath: \learn-js-data-algorithm\myEg\8-dui\al.js
@@ -33,6 +33,7 @@ function buildMaxHeap(array,compareFn) {
     return array;
 }
 
+// TODO 下一函数待完善
 function heapify(array,index,heapSize,compareFn) {
     
 }
