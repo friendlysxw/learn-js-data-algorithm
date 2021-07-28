@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-15 11:00:48
- * @LastEditTime: 2021-07-19 16:09:00
+ * @LastEditTime: 2021-07-28 16:02:22
  * @LastEditors: Please set LastEditors
  * @Description: 工具函数
  * @FilePath: \learn-js-data-algorithm\myEg\util.js
@@ -45,4 +45,13 @@ exports.defaultToString = function(item) {
         return `${item}`;
     }
     return item.toString();
+}
+
+/**
+ * 数组项交换函数
+ */
+exports.swap = function(array,a,b){
+    const temp = array[a];
+    array[a] = array[b];
+    array[b] = temp;
 }
