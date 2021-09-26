@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 15:45:42
- * @LastEditTime: 2021-07-20 17:28:13
+ * @LastEditTime: 2021-08-02 15:35:09
  * @LastEditors: Please set LastEditors
  * @Description: 数据结构：字典和散列表
  * @FilePath: \learn-js-data-algorithm\myEg\5-zidian\ds.js
@@ -115,12 +115,12 @@ class HashTable {
         if (typeof key === 'number') {
             return key;
         }
-        const tableKey = this.toStrFn(key);
-        let hash = 0;
-        for (let i = 0; i < tableKey.length; i++) {
-            hash += tableKey.charCodeAt(i);
-        }
-        return hash % 37;
+        // const tableKey = this.toStrFn(key);
+        // let hash = 0;
+        // for (let i = 0; i < tableKey.length; i++) {
+        //     hash += tableKey.charCodeAt(i);
+        // }
+        // return hash % 37;
 
         // 更好的散列函数
         const tableKey = this.toStrFn(key);
