@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-15 11:00:48
- * @LastEditTime: 2021-07-28 16:02:22
+ * @LastEditTime: 2021-09-26 17:11:19
  * @LastEditors: Please set LastEditors
  * @Description: 工具函数
  * @FilePath: \learn-js-data-algorithm\myEg\util.js
@@ -54,4 +54,15 @@ exports.swap = function(array,a,b){
     const temp = array[a];
     array[a] = array[b];
     array[b] = temp;
+}
+
+/**
+ * 创建一个未排序的数组
+ */
+exports.createNonSortedArray = function(size){
+    const array = [];
+    for (let i = size; i > 0; i--) {
+        array.push(i);
+    }
+    return array;
 }
